@@ -20,12 +20,3 @@ This project aims to analyze **differentially expressed genes (DEGs)** by perfor
 ✔ **Clustering & Topology Analysis** to identify key regulatory genes  
 
 The pipeline is implemented in **R** and integrates **Cytoscape** for network visualization.
-
-# Output
-The pipeline generates:
-✔ **DEG tables** (degs.tsv)
-✔ **Volcano plots** (volcano-plot.png)
-✔ **Pathway enrichment tables** (WP-Enrichment.txt)
-✔ **Tree plots** (WP_Treeplot.png)
-✔ **PPI network files** (for Cytoscape)
-✔ **Interpretation Guide**
