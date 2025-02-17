@@ -15,15 +15,18 @@ Originally developed by Dr. Summer-Kutmon and later refined by E. Retounioti, L.
 This pipeline follows a structured analysis workflow for transcriptomic data, incorporating key steps:
 
 - Preprocessing & DEG Identification
+  
 Import structured gene expression data.
 Filter and format data for analysis.
 Identify DEGs based on log2 fold change and adjusted p-values.
 
 - Visualization
+  
 Generate volcano plots to visualize DEGs at different cutoffs (log2FC = 0.26, 0.58, 1).
 Create tree plots to show pathway relationships.
 
 - Pathway Enrichment Analysis
+  
 Perform Over-Representation Analysis (ORA) using either:
 Gene Ontology (GO)
 KEGG Pathways
@@ -33,11 +36,13 @@ Reactome
 Evaluate functional relevance of significantly altered pathways.
 
 - Protein-Protein Interaction (PPI) Network
+
 Construct PPI networks using STRING and visualize them in Cytoscape.
 Perform network topology analysis to identify hub genes.
 Cluster genes into functional communities.
 
 - Final Report
+  
 Interpret results based on enrichment analysis and network insights.
 
 # Installation & Dependencies
@@ -71,6 +76,7 @@ log2fc.cutoff <- 1 # Change to 0.58 or 0.26 if needed
 
 # Output
 - The pipeline generates:
+  
 DEG tables (degs.tsv)
 Volcano plots (volcano-plot.png)
 Pathway enrichment tables (WP-Enrichment.txt)
