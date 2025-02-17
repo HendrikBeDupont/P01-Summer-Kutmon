@@ -23,9 +23,9 @@ The pipeline is implemented in **R** and integrates **Cytoscape** for network vi
 
 # Output
 The pipeline generates:
-✔ **DEG tables (degs.tsv)**
-✔ **Volcano plots (volcano-plot.png)**
-✔ **Pathway enrichment tables (WP-Enrichment.txt)**
-✔ **Tree plots (WP_Treeplot.png)**
-✔ **PPI network files (for Cytoscape)**
+✔ **DEG tables** (degs.tsv)
+✔ **Volcano plots** (volcano-plot.png)
+✔ **Pathway enrichment tables** (WP-Enrichment.txt)
+✔ **Tree plots** (WP_Treeplot.png)
+✔ **PPI network files** (for Cytoscape)
 ✔ **Interpretation Guide**
