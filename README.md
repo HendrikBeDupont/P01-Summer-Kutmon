@@ -8,7 +8,7 @@ This workflow is particularly suited for analyzing datasets like GSE239914 (vEDS
 
 # Authors
 
-Originally developed by Dr. Summer-Kutmon and later refined by E. Retounioti, L. Cunningham, Q. Rosina, S. van Weeren, M. Reinartz, R. van den Brand, and H. Dupont.
+Originally developed by Dr. Summer-Kutmon and later refined by E. Retounioti, L. Cunningham, Q. Rosina, S. van Weeren, M. Reinartz, R. van den Brand, and [H. Dupont](https://github.com/HendrikBeDupont).
 
 # Overview
 
