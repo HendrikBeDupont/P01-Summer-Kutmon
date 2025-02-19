@@ -4,7 +4,7 @@ This repository contains an R-based pipeline for performing functional bioinform
 The pipeline is designed to process transcriptomic data, identify differentially expressed genes (DEGs), perform pathway enrichment analysis, 
 and construct protein-protein interaction (PPI) networks.
 
-This workflow is particularly suited for analyzing datasets like GSE239914 (vEDS Fibroblasts) but can be adapted to other transcriptomic datasets.
+The repository also contains a Python script rendering a diagraph of the workflow. This workflow is particularly suited for analyzing datasets like GSE239914 (vEDS Fibroblasts) but can be adapted to other transcriptomic datasets.
 
 # Authors
 
