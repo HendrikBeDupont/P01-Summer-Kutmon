@@ -8,7 +8,7 @@ The repository also contains a Python script rendering a diagraph of the workflo
 
 # Authors
 
-Originally developed by [Dr. Summer-Kutmon](https://github.com/mkutmon) and later refined by [E. Retounioti](https://github.com/ErsiRet?tab=overview&from=2025-02-01&to=2025-02-20), [L. Cunningham](https://github.com/Lilabelle), Q. Rosina, S. van Weeren, [M. Reinartz](https://github.com/marvinreinartz), R. van den Brand, and [H. Dupont](https://github.com/HendrikBeDupont).
+Originally developed by [Dr. Summer-Kutmon](https://github.com/mkutmon) and later refined by [E. Retounioti](https://github.com/ErsiRet?tab=overview&from=2025-02-01&to=2025-02-20), [L. Cunningham](https://github.com/Lilabelle), Q. Rosina, [S. van Weeren](https://github.com/Spitvuurtje), [M. Reinartz](https://github.com/marvinreinartz), R. van den Brand, and [H. Dupont](https://github.com/HendrikBeDupont).
 
 # Overview
 
