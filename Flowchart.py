@@ -18,33 +18,36 @@ workflow.node("Volcano", "1.2 Visualizing Results with a Volcano Plot", fillcolo
 # Filtering for Differentially Expressed Genes (DEGs)
 workflow.node("DEGs", "1.3 Filtering for Differentially Expressed Genes (DEGs)", fillcolor="lightblue")
 
+# Run analysis on up- or down-regulated genes
+workflow.node("UpDown", "Optional: Run analysis on up- or down-regulated genes", fillcolor="lightblue")
+
 # First Decision Point: Cutoff
-workflow.node("Cutoff", "Decision: Choose Log2FC Cutoff", shape="diamond", fillcolor="lightyellow")
+workflow.node("Cutoff", "Decision: Choose Log2FC Cutoff and Set p-value Cutoff", shape="diamond", fillcolor="lightyellow")
 
 # Path A: Gene Sets Enrichment Analysis
 workflow.node("GeneSets", "Decision: Choose Gene Set Collection", shape="diamond", fillcolor="lightyellow")
 workflow.node("ORA", "2.1 Over-Representation Analysis (ORA)", fillcolor="lightgray")
 workflow.node("TreePlot", "2.2 Tree Plot (Visualization of ORA)", fillcolor="lightgray")
-workflow.node("PathwayVisualization", "2.3 Optional: Pathway Visualization", fillcolor="lightgray")
+workflow.node("PathwayVisualization", "Optional: Pathway Visualization", fillcolor="lightgray")
 
 
 # Path B: Network-Based Analysis
-workflow.node("Confidence", "Decision: Set p-value Cutoff", shape="diamond", fillcolor="lightyellow")
 workflow.node("PPI", "3.1 Protein-Protein Interaction (PPI) Network", fillcolor="lightgreen")
 workflow.node("Clustering", "3.2.1 Clustering: Finding Communities", fillcolor="lightgreen")
 workflow.node("Topology", "3.2.2 Network Topology (Hubs & Bottlenecks)", fillcolor="lightgreen")
 
 # Final Report
-workflow.node("Report", " 4 Final Report: Functional Interpretation", fillcolor="lightblue")
+workflow.node("Report", " 1.4 Final Report: Functional Interpretation", fillcolor="lightblue")
 
 # Define workflow edges
 workflow.edge("Dataset", "Preprocessing")
 workflow.edge("Preprocessing", "Volcano")
-workflow.edge("Volcano", "DEGs")
-workflow.edge("DEGs", "Cutoff")
+workflow.edge("Volcano", "Cutoff")
+workflow.edge("Cutoff", "DEGs")
+workflow.edge("DEGs", "UpDown")
 
 # Path A: Gene Sets Enrichment Analysis
-workflow.edge("Cutoff", "GeneSets")
+workflow.edge("DEGs", "GeneSets")
 workflow.edge("GeneSets", "ORA")
 workflow.edge("ORA", "PathwayVisualization")
 workflow.edge("ORA", "TreePlot")
@@ -52,8 +55,7 @@ workflow.edge("TreePlot", "PathwayVisualization")
 workflow.edge("TreePlot", "Report")
 
 # Path B: Network-Based Analysis
-workflow.edge("Cutoff", "Confidence")
-workflow.edge("Confidence", "PPI")
+workflow.edge("DEGs", "PPI")
 workflow.edge("PPI", "Clustering")
 workflow.edge("PPI", "Topology")
 
@@ -80,4 +82,4 @@ with workflow.subgraph(name="cluster_legend") as legend:
 # Render and save flowchart with dataset node and vertical legend
 workflow.render("functional_bioinformatics_workflow_final_v2")
 
-print("Flowchart with legend saved as functional_bioinformatics_workflow_final_v2.png")
+print("Flowchart with legend saved as functional_bioinformatics_workflow_final_v3.png")
