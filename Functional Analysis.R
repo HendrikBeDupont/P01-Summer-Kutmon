@@ -290,7 +290,17 @@ setNodeColorMapping("log2FoldChange", control.points, colors, style.name = "log2
 RCy3::setVisualStyle("log2FC vis")
 RCy3::lockNodeDimensions("TRUE", "log2FC vis")
 
-# drug traget extension
-RCy3::loadTableData(data=drug_target_data, data.key.column = "target_gene_symbol", table = "node", table.key.column = "Symbol")
-RCy3::setNodeShapeMapping("isDrugTarget", c(TRUE, FALSE), c("diamond", "ellipse"), style.name = "log2FC vis")
+# Drug traget extension, define the path to your LinkSet file (adjust this path to your actual file location)
+linkset_path <- normalizePath("C:/Users/hendrikdupont/Documents/drugbank4-2.xgmml")
 
+# Extend the network using CyTargetLinker
+RCy3::commandsRun(paste('cytargetlinker extend',
+                        'idAttribute="query term"',  
+                        paste0('linkSetFiles="', linkset_path, '"'),
+                        'network=current'))
+
+# Optional: Visualize drug-target interactions with different node shapes
+RCy3::setNodeShapeMapping("Type", c("Drug", "Protein"), c("diamond", "ellipse"), style.name = "log2FC vis")
+
+# Optional: Highlight drug-target interactions using edge color
+RCy3::setEdgeColorMapping("interaction", c("drugs-targets"), c("#FF5555"), style.name = "log2FC vis")
