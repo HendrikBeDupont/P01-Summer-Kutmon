@@ -290,6 +290,7 @@ setNodeColorMapping("log2FoldChange", control.points, colors, style.name = "log2
 RCy3::setVisualStyle("log2FC vis")
 RCy3::lockNodeDimensions("TRUE", "log2FC vis")
 
+###############DOESNT WORK################
 # Drug traget extension, define the path to your LinkSet file (adjust this path to your actual file location)
 linkset_path <- normalizePath("C:/Users/hendrikdupont/Documents/drugbank4-2.xgmml")
 
