@@ -22,19 +22,23 @@ workflow.node("DEGs", "1.3 Filtering for Differentially Expressed Genes (DEGs)",
 workflow.node("UpDown", "Optional: Run analysis on up- or down-regulated genes", fillcolor="lightblue")
 
 # First Decision Point: Cutoff
-workflow.node("Cutoff", "Decision: Choose Log2FC Cutoff and Set p-value Cutoff", shape="diamond", fillcolor="lightyellow")
+workflow.node("Cutoff", "Decision: Choose Log2FC Cutoff and Set p adjusted Cutoff", shape="diamond", fillcolor="lightyellow")
+
+# Second Decision Point: Confidence
+workflow.node("Confidence", "Decision: Set Confidence Cutoff", shape="diamond", fillcolor="lightyellow")
+
 
 # Path A: Gene Sets Enrichment Analysis
 workflow.node("GeneSets", "Decision: Choose Gene Set Collection", shape="diamond", fillcolor="lightyellow")
-workflow.node("ORA", "2.1 Over-Representation Analysis (ORA)", fillcolor="lightgray")
-workflow.node("TreePlot", "2.2 Tree Plot (Visualization of ORA)", fillcolor="lightgray")
-workflow.node("PathwayVisualization", "Optional: Pathway Visualization", fillcolor="lightgray")
+workflow.node("ORA", "2.1 Over-Representation Analysis (ORA)", fillcolor="crimson")
+workflow.node("TreePlot", "2.2 Treeplot Visualization", fillcolor="crimson")
+workflow.node("PathwayVisualization", "Optional: Pathway Visualization", fillcolor="crimson")
 
 
 # Path B: Network-Based Analysis
-workflow.node("PPI", "3.1 Protein-Protein Interaction (PPI) Network", fillcolor="lightgreen")
-workflow.node("Clustering", "3.2.1 Clustering: Finding Communities", fillcolor="lightgreen")
-workflow.node("Topology", "3.2.2 Network Topology (Hubs & Bottlenecks)", fillcolor="lightgreen")
+workflow.node("PPI", "3.1 Creation of the PPI Network", fillcolor="lightgreen")
+workflow.node("Clustering", "3.2 Visualization and Analysis", fillcolor="lightgreen")
+workflow.node("Topology", "3.3 Clustering and Drug-target extension", fillcolor="lightgreen")
 
 # Final Report
 workflow.node("Report", " 1.4 Final Report: Functional Interpretation", fillcolor="lightblue")
@@ -55,7 +59,8 @@ workflow.edge("TreePlot", "PathwayVisualization")
 workflow.edge("TreePlot", "Report")
 
 # Path B: Network-Based Analysis
-workflow.edge("DEGs", "PPI")
+workflow.edge("DEGs", "Confidence")
+workflow.edge("Confidence", "PPI")
 workflow.edge("PPI", "Clustering")
 workflow.edge("PPI", "Topology")
 
@@ -69,15 +74,15 @@ workflow.edge("Topology", "Report")
 # Create a vertical legend in the top right corner using a subgraph cluster
 with workflow.subgraph(name="cluster_legend") as legend:
     legend.attr(label="Legend", style="filled", color="white", rank="sink")
-    legend.node("Legend_Blue", "General Data Processing & Results", fillcolor="lightblue", shape="box")
+    legend.node("Legend_Blue", "Data Exploration & Results", fillcolor="lightblue", shape="box")
     legend.node("Legend_Yellow", "Decision Points (User Choice Required)", fillcolor="lightyellow", shape="box")
-    legend.node("Legend_Gray", "Pathway Enrichment Analysis", fillcolor="lightgray", shape="box")
-    legend.node("Legend_Green", "Network Analysis (Clustering & Topology)", fillcolor="lightgreen", shape="box")
+    legend.node("Legend_Red", "Pathway Enrichment Analysis", fillcolor="crimson", shape="box")
+    legend.node("Legend_Green", "Network Analysis and Visualization", fillcolor="lightgreen", shape="box")
 
     # Arrange legend items vertically
     legend.edge("Legend_Blue", "Legend_Yellow", style="invis")
-    legend.edge("Legend_Yellow", "Legend_Gray", style="invis")
-    legend.edge("Legend_Gray", "Legend_Green", style="invis")
+    legend.edge("Legend_Yellow", "Legend_Red", style="invis")
+    legend.edge("Legend_Red", "Legend_Green", style="invis")
 
 # Render and save flowchart with dataset node and vertical legend
 workflow.render("functional_bioinformatics_workflow_final_v2")
