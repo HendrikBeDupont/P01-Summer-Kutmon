@@ -13,10 +13,11 @@ Originally developed by [Dr. Summer-Kutmon](https://github.com/mkutmon) and late
 # Overview
 
 This project aims to analyze **differentially expressed genes (DEGs)** by performing:  
-✔ **Preprocessing & Filtering** of RNA-seq data  
-✔ **Volcano Plot Visualization** for DEG selection  
-✔ **Pathway Enrichment Analysis** using various gene set databases  
-✔ **Protein-Protein Interaction (PPI) Network Analysis**  
-✔ **Clustering & Topology Analysis** to identify key regulatory genes  
+✔ **Data Import and Preprocessing** of RNA-seq data  
+✔ **Visualizing Results with a Volcano Plot** for DEG selection  
+✔ **Over-representation analysis** using a case-specific gene set collection
+✔ **Pathway visualization** 
+✔ **Protein-Protein Interaction (PPI)** Network visualization and Analysis
+✔ **Clustering and Drug-target extension** to identify key regulatory genes  
 
 The pipeline is implemented in **R** and integrates **Cytoscape** for network visualization.
