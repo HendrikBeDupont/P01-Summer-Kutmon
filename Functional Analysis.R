@@ -58,7 +58,7 @@ out.folder <- "output2/"
 dir.create(out.folder)
 
 # ##################################################################
-# Preprocessing: Formatting and Cleaning
+# 1.1 Data Import and Preprocessing
 # ##################################################################
 
 # Load dataset
@@ -76,7 +76,7 @@ data.pc <- data %>%
 data.pc <- data.pc[,-6]
 
 # ##################################################################
-# Volcano Plot
+# 1.2 Visualizing Results with a Volcano Plot
 # ##################################################################
 
 # Assign categories based on log2FC cutoffs
@@ -132,11 +132,19 @@ dev.off()
 log2fc.cutoff <- 1
 pvalue.cutoff <- 0.05
 
+# ##################################################################
+# 1.3 Filtering for Differentially Expressed Genes (DEGs)
+# ##################################################################
+
 # Select differently expressed genes (DEGs) (genes meeting log2FC and p-value criteria)
 degs <- data.pc[abs(data.pc$log2FoldChange) > log2fc.cutoff & data.pc$padj < pvalue.cutoff,]
 
 # Save the DEGs to a file
 write.table(degs, file=paste0(out.folder,"degs.tsv"), row.names = FALSE, sep="\t", quote = FALSE)
+
+# ##################################################################
+# Optional: Run analysis on up- or down-regulated genes
+# ##################################################################
 
 # Selects genes where log2FoldChange is greater than the threshold (1 by default)
 genes.up <- nrow(degs[degs$log2FoldChange > log2fc.cutoff,])
@@ -149,7 +157,7 @@ cat("Number of Upregulated Genes: ", genes.up, "\n")
 cat("Number of Downregulated Genes: ", genes.down, "\n")
 
 # ##################################################################
-# PATHWAY ENRICHMEN: Over-Represenation Analysis (ORA)
+# 2.1 Over-representation analysis (ORA)
 # ##################################################################
 
 # Fetch WikiPathways gene sets
@@ -162,6 +170,10 @@ res.wp.df <- as.data.frame(res.wp)
 # Save results 
 write.table(res.wp.df, file=paste0(out.folder,"WP-Enrichment.txt"), sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 
+# ##################################################################
+# 2.2 Tree Plot Visualization 
+# ##################################################################
+
 # Tree plot visualization ->> pathways that are close together share a lot of genes
 # you can do res.wp.up /down based on this code to see up and downregulated genes
 res.wp.sim <- enrichplot::pairwise_termsim(res.wp)
@@ -173,9 +185,8 @@ png(filename , width = 3000, height = 4000, res = 150)
 plot(treeplot(res.wp.sim, label_format = 0.3, showCategory = nrow(res.wp.df), cluster.params = list(label_words_n = 0)))
 dev.off()
 
-
 # ##################################################################
-# PATHWAY VISUALIZATION 
+# Optional: Pathway visualization 
 # ##################################################################
 
 # Check if Cytoscape is running - keep it open and check what is happening while you are 
@@ -213,7 +224,7 @@ RCy3::clearSelection()
 
 
 # ##################################################################
-# PPI network creation with the stringApp for Cytoscape
+# 3.1 Creation of the PPI Network
 # ##################################################################
 
 # make sure Cytoscape is running
@@ -249,7 +260,7 @@ write_clip(query)
 # =======================
 
 # ##################################################################
-# Network Toplology
+# 3.2 Visualization and Analysis
 # ##################################################################
 
 # Analyze network topology
@@ -266,10 +277,10 @@ RCy3::setVisualStyle("centrality")
 RCy3::toggleGraphicsDetails()
 
 # ##################################################################
-# Clustering
+# 3.3 Clustering and Drug-target Extension
 # ##################################################################
 
-# data vTRUEisualization
+# data vTRUEisualization clutering
 RCy3::loadTableData(data=data.pc, data.key.column = "Symbol", table = "node", table.key.column = "query term")
 RCy3::createVisualStyle("log2FC vis")
 RCy3::setNodeLabelMapping("display name", style.name = "log2FC vis")
@@ -278,3 +289,8 @@ colors <-  c ('#5588DD', '#FFFFFF', '#DD8855')
 setNodeColorMapping("log2FoldChange", control.points, colors, style.name = "log2FC vis", default.color = "#C0C0C0")
 RCy3::setVisualStyle("log2FC vis")
 RCy3::lockNodeDimensions("TRUE", "log2FC vis")
+
+# drug traget extension
+RCy3::loadTableData(data=drug_target_data, data.key.column = "target_gene_symbol", table = "node", table.key.column = "Symbol")
+RCy3::setNodeShapeMapping("isDrugTarget", c(TRUE, FALSE), c("diamond", "ellipse"), style.name = "log2FC vis")
+
