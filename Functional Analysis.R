@@ -54,7 +54,7 @@ library(ggplot2)
 setwd(getwd())
 
 # We will create an output folder where all figures and files will be stored
-out.folder <- "output2/"
+out.folder <- "output/"
 dir.create(out.folder)
 
 # ##################################################################
