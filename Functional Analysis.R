@@ -34,6 +34,7 @@ if (!("RCy3" %in% installed.packages())) { BiocManager::install("RCy3", update=F
 if (!("msigdbr" %in% installed.packages())) { BiocManager::install("msigdbr",update=FALSE) }
 if (!("RColorBrewer" %in% installed.packages())) { BiocManager::install("RColorBrewer",update=FALSE) }
 if (!("readr" %in% installed.packages())) { BiocManager::install("readr",update=FALSE) }
+if (!("rWikiPathways" %in% installed.packages())) { BiocManager::install("rWikiPathways",update=FALSE) }
 
 library(rstudioapi)
 library(org.Hs.eg.db)
@@ -48,6 +49,7 @@ library(msigdbr)
 library(RColorBrewer)
 library(readr)
 library(ggplot2)
+library(rWikiPathways)
 
 # We will set the working directory to the location where the current 
 # script is located. This way, we can use relative file path locations. 
@@ -207,6 +209,8 @@ if(!"name: WikiPathways, version: 3.3.10, status: Installed" %in% RCy3::getInsta
 
 pw.id <- "WP422"
 RCy3::commandsRun(paste0('wikipathways import-as-pathway id=',pw.id)) 
+#for drug-target extension
+#RCy3::commandsRun(paste0('wikipathways import-as-network id=',pw.id)) 
 
 toggleGraphicsDetails()
 
@@ -248,14 +252,14 @@ commandsRun(paste0('string protein query cutoff=0.7 newNetName="PPI network" que
 # uncomment (remove #) and run the following line - create the network "manually" in Cytoscape, then run the rest of the code normally (check video!!)
 
 # windows:
-# writeClipboard(query) 
+#writeClipboard(query) 
 
 # apple: 
-# install.packages("clipr")
-# library(clipr)
+#install.packages("clipr")
+#library(clipr)
 
 # Copy the gene list to clipboard
-# write_clip(query)
+#write_clip(query)
 # =======================
 
 # ##################################################################
@@ -275,11 +279,7 @@ setNodeSizeMapping("Degree", table.column.values = c(0,60), sizes = c(30,100), m
 RCy3::setVisualStyle("centrality")
 RCy3::toggleGraphicsDetails()
 
-# ##################################################################
-# 3.3 Clustering and Drug-target Extension
-# ##################################################################
-
-# data vTRUEisualization clutering
+# log2FC visualization
 RCy3::loadTableData(data=data.pc, data.key.column = "Symbol", table = "node", table.key.column = "query term")
 RCy3::createVisualStyle("log2FC vis")
 RCy3::setNodeLabelMapping("display name", style.name = "log2FC vis")
@@ -289,18 +289,31 @@ setNodeColorMapping("log2FoldChange", control.points, colors, style.name = "log2
 RCy3::setVisualStyle("log2FC vis")
 RCy3::lockNodeDimensions("TRUE", "log2FC vis")
 
-###############DOESNT WORK################
+# ##################################################################
+# 3.3 Clustering and Drug-target Extension
+# ##################################################################
+
+RCy3::installApp("clustermaker2")
+# TODO: add code!
+
+##############################################
+
 # Drug traget extension, define the path to your LinkSet file (adjust this path to your actual file location)
-linkset_path <- normalizePath("C:/Users/hendrikdupont/Documents/drugbank4-2.xgmml")
+unzip(system.file("extdata","drugbank-5.1.0.xgmml.zip", package="rWikiPathways"), exdir = getwd())
+drugbank <- file.path(getwd(), "drugbank-5.1.0.xgmml")
 
-# Extend the network using CyTargetLinker
-RCy3::commandsRun(paste('cytargetlinker extend',
-                        'idAttribute="query term"',  
-                        paste0('linkSetFiles="', linkset_path, '"'),
-                        'network=current'))
+RCy3::installApp("CyTargetLinker")
 
-# Optional: Visualize drug-target interactions with different node shapes
-RCy3::setNodeShapeMapping("Type", c("Drug", "Protein"), c("diamond", "ellipse"), style.name = "log2FC vis")
+commandsRun(paste0('cytargetlinker extend idAttribute="EnsemblGeneID" linkSetFiles="', drugbank, '"') )
+#commandsRun(paste0('cytargetlinker extend idAttribute="Ensembl" linkSetFiles="', drugbank, '"') )
 
-# Optional: Highlight drug-target interactions using edge color
-RCy3::setEdgeColorMapping("interaction", c("drugs-targets"), c("#FF5555"), style.name = "log2FC vis")
+commandsRun('cytargetlinker applyLayout network="current"')
+
+my.drugs <- selectNodes("drug", by.col = "CTL.Type", preserve = FALSE)$nodes #easy way to collect node SUIDs by column value
+clearSelection()
+setNodeColorBypass(my.drugs, "#DD99FF")
+setNodeShapeBypass(my.drugs, "hexagon")
+
+drug.labels <- getTableColumns(columns=c("SUID","CTL.label"))
+drug.labels <- na.omit(drug.labels)
+mapply(function(x,y) setNodeLabelBypass(x,y), drug.labels$SUID, drug.labels$CTL.label)
