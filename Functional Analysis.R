@@ -251,12 +251,11 @@ commandsRun(paste0('string protein query cutoff=0.7 newNetName="PPI network" que
 # writeClipboard(query) 
 
 # apple: 
-install.packages("clipr")
-library(clipr)
+# install.packages("clipr")
+# library(clipr)
 
 # Copy the gene list to clipboard
-query <- paste(degs.strict$Symbol, collapse=",")
-write_clip(query)
+# write_clip(query)
 # =======================
 
 # ##################################################################
